@@ -57,8 +57,8 @@ services:
       - 5020:80
     depends_on:
       - identitydbserver
-  angular:
-    build: "dkrishen/mraangular:v1"
-    container_name: angular
-    ports:
-      - 4200:80
+  # angular:
+  #   image: "dkrishen/mraangular:v1"
+  #   container_name: angular
+  #   ports:
+  #     - 4200:80
