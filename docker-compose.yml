@@ -25,33 +25,33 @@ services:
     ports:
       - 5010:1433
   gateway:
-    image: "dkrishen/mragateway:v1"
+    image: "dkrishen/mragateway:v2"
     container_name: gateway
     ports:
       - 5100:80
   identity:
-    image: "dkrishen/mraidentity:v1"
+    image: "dkrishen/mraidentity:v2"
     container_name: identity
     ports:
       - 5000:80
     depends_on:
       - identitydbserver
   book:
-    image: "dkrishen/mrabooks:v1"
+    image: "dkrishen/mrabooks:v2"
     container_name: books
     ports:
       - 5200:80
     depends_on:
       - bookdbserver
   room:
-    image: "dkrishen/mrarooms:v1"
+    image: "dkrishen/mrarooms:v2"
     container_name: rooms
     ports:
       - 5300:80
     depends_on:
         - roomdbserver
   user:
-    image: "dkrishen/mrausers:v1"
+    image: "dkrishen/mrausers:v2"
     container_name: users
     ports:
       - 5020:80
