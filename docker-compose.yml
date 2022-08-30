@@ -1,4 +1,11 @@
 version: '3'
+volumes:
+  identity_data:
+    external: true
+  book_data:
+    external: true
+  room_data:
+    external: true
 services:
   bookdbserver:
     image: arm64v8/mysql:8.0.30
@@ -30,6 +37,8 @@ services:
       - MYSQL_DATABASE=mra.booksdb
     ports:
       - 5210:3306
+    volumes:
+      - book_data:/MRA/bookdb
   roomdbserver:
     image: arm64v8/mysql:8.0.30
     container_name: roomsdbserver
@@ -60,6 +69,8 @@ services:
       - MYSQL_DATABASE=mra.roomsdb
     ports:
       - 5310:3306
+    volumes:
+      - room_data:/MRA/roomdb
   identitydbserver:
     image: arm64v8/mysql:8.0.30
     container_name: identitydbserver
@@ -90,6 +101,8 @@ services:
       - MYSQL_DATABASE=mra.identitydb
     ports:
       - 5010:3306
+    volumes:
+      - identity_data:/MRA/identitydb
   gateway:
     image: "dkrishen/mragateway:rsb-0.1"
     container_name: gateway
