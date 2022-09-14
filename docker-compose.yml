@@ -1,10 +1,18 @@
 version: '3'
 
+volumes:
+  identity_data:
+    external: true
+  booking_data:
+    external: true
+  room_data:
+    external: true
+
 services:
-  bookdbserver:
+  bookingdbserver:
     # image: arm64v8/mysql:8.0.30
     image: mysql:8.0.30
-    container_name: booksdbserver
+    container_name: bookingdbserver
     command: 
       --innodb_buffer_pool_size=5M 
       --innodb_log_buffer_size=256K
@@ -33,7 +41,7 @@ services:
     ports:
       - 5210:3306
     volumes:
-      - /mra/bookdb:/var/lib/mysql
+      - booking_data:/var/lib/mysql
 
   roomdbserver:
     # image: arm64v8/mysql:8.0.30
@@ -67,7 +75,7 @@ services:
     ports:
       - 5310:3306
     volumes:
-      - /mra/roomdb:/var/lib/mysql
+      - room_data:/var/lib/mysql
 
   identitydbserver:
     # image: arm64v8/mysql:8.0.30
@@ -101,7 +109,7 @@ services:
     ports:
       - 5010:3306
     volumes:
-      - /mra/identitydb:/var/lib/mysql
+      - identity_data:/var/lib/mysql
 
   gateway:
     image: "dkrishen/mragateway:host-0.1"
