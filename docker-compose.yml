@@ -1,13 +1,5 @@
 version: '3'
 
-volumes:
-  identity_data:
-    external: true
-  book_data:
-    external: true
-  room_data:
-    external: true
-
 services:
   bookdbserver:
     # image: arm64v8/mysql:8.0.30
@@ -126,7 +118,7 @@ services:
       - identitydbserver
 
   booking:
-    image: "dkrishen/mrabooks:host-0.1"
+    image: "dkrishen/mrabookings:host-0.1"
     container_name: bookings
     ports:
       - 5200:80
