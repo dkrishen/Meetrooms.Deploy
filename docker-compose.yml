@@ -37,7 +37,7 @@ services:
       --performance_schema=off
     environment:
       - MYSQL_ROOT_PASSWORD=mysq1DbP@ss
-      - MYSQL_DATABASE=mra.booksdb
+      - MYSQL_DATABASE=mra.bookingsdb
     ports:
       - 5210:3306
     volumes:
