@@ -1,4 +1,5 @@
 version: '3'
+
 volumes:
   identity_data:
     external: true
@@ -6,9 +7,11 @@ volumes:
     external: true
   room_data:
     external: true
+
 services:
   bookdbserver:
-    image: arm64v8/mysql:8.0.30
+    # image: arm64v8/mysql:8.0.30
+    image: mysql:8.0.30
     container_name: booksdbserver
     command: 
       --innodb_buffer_pool_size=5M 
@@ -39,8 +42,10 @@ services:
       - 5210:3306
     volumes:
       - /mra/bookdb:/var/lib/mysql
+
   roomdbserver:
-    image: arm64v8/mysql:8.0.30
+    # image: arm64v8/mysql:8.0.30
+    image: mysql:8.0.30
     container_name: roomsdbserver
     command: 
       --innodb_buffer_pool_size=5M 
@@ -71,8 +76,10 @@ services:
       - 5310:3306
     volumes:
       - /mra/roomdb:/var/lib/mysql
+
   identitydbserver:
-    image: arm64v8/mysql:8.0.30
+    # image: arm64v8/mysql:8.0.30
+    image: mysql:8.0.30
     container_name: identitydbserver
     command: 
       --innodb_buffer_pool_size=5M 
@@ -103,38 +110,47 @@ services:
       - 5010:3306
     volumes:
       - /mra/identitydb:/var/lib/mysql
+
   gateway:
-    image: "dkrishen/mragateway:rsb-0.2"
+    image: "dkrishen/mragateway:host-0.1"
     container_name: gateway
     ports:
       - 5100:80
+
   identity:
-    image: "dkrishen/mraidentity:rsb-0.2"
+    image: "dkrishen/mraidentity:host-0.1"
     container_name: identity
     ports:
       - 5000:80
     depends_on:
       - identitydbserver
-    environment:
-      - testenv=value
-  book:
-    image: "dkrishen/mrabooks:rsb-0.2"
-    container_name: books
+
+  booking:
+    image: "dkrishen/mrabooks:host-0.1"
+    container_name: bookings
     ports:
       - 5200:80
     depends_on:
       - bookdbserver
+      
   room:
-    image: "dkrishen/mrarooms:rsb-0.2"
+    image: "dkrishen/mrarooms:host-0.1"
     container_name: rooms
     ports:
       - 5300:80
     depends_on:
         - roomdbserver
+
   user:
-    image: "dkrishen/mrausers:rsb-0.2"
+    image: "dkrishen/mrausers:host-0.1"
     container_name: users
     ports:
       - 5020:80
     depends_on:
       - identitydbserver
+
+  angular.spa:
+    image: "dkrishen/mraspa:host-0.1"
+    container_name: spa
+    ports:
+      - 4200:80
