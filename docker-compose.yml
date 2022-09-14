@@ -131,7 +131,7 @@ services:
     ports:
       - 5200:80
     depends_on:
-      - bookdbserver
+      - bookingdbserver
       
   room:
     image: "dkrishen/mrarooms:host-0.1"
