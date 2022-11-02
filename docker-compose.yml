@@ -9,6 +9,20 @@ volumes:
     external: true
 
 services:
+  rabbitmq:
+    container_name: rabbitmq
+    image: rabbitmq:3-management
+    hostname: rabbitmqserver
+    environment:
+      - RABBITMQ_DEFAULT_USER=RabbitMqUser
+      - RABBITMQ_DEFAULT_PASS=RabbitMqPassword
+    ports:
+      # AMQP protocol port
+      - '5500:5672'
+      # HTTP management UI
+      - '5510:15672'
+    restart: always
+
   bookingdbserver:
     # image: arm64v8/mysql:8.0.30
     image: mysql:8.0.30
@@ -42,6 +56,7 @@ services:
       - 5210:3306
     volumes:
       - booking_data:/var/lib/mysql
+    restart: always
 
   roomdbserver:
     # image: arm64v8/mysql:8.0.30
@@ -76,6 +91,7 @@ services:
       - 5310:3306
     volumes:
       - room_data:/var/lib/mysql
+    restart: always
 
   identitydbserver:
     # image: arm64v8/mysql:8.0.30
@@ -110,47 +126,64 @@ services:
       - 5010:3306
     volumes:
       - identity_data:/var/lib/mysql
+    restart: always
 
   gateway:
-    image: "dkrishen/mragateway:host-0.1"
+    image: "dkrishen/mragateway:host-1.0"
     container_name: gateway
     ports:
       - 5100:80
+    depends_on:
+      - rabbitmq
+      - signalr.api
+    restart: always
 
   identity:
-    image: "dkrishen/mraidentity:host-0.1"
+    image: "dkrishen/mraidentity:host-1.0"
     container_name: identity
     ports:
       - 5000:80
     depends_on:
       - identitydbserver
+    restart: always
 
   booking:
-    image: "dkrishen/mrabookings:host-0.1"
+    image: "dkrishen/mrabookings:host-1.0"
     container_name: bookings
     ports:
       - 5200:80
     depends_on:
       - bookingdbserver
+    restart: always
       
   room:
-    image: "dkrishen/mrarooms:host-0.1"
+    image: "dkrishen/mrarooms:host-1.0"
     container_name: rooms
     ports:
       - 5300:80
     depends_on:
         - roomdbserver
+    restart: always
 
   user:
-    image: "dkrishen/mrausers:host-0.1"
+    image: "dkrishen/mrausers:host-1.0"
     container_name: users
     ports:
       - 5020:80
     depends_on:
       - identitydbserver
+    restart: always
+
+  signalr.api:
+    image: "dkrishen/mrasignalr:host-1.0"
+    container_name: signalr
+    ports:
+      - 5400:80
+    restart: always
 
   angular.spa:
-    image: "dkrishen/mraspa:host-0.1"
+    image: "dkrishen/mraspa:host-1.0"
     container_name: spa
     ports:
       - 4200:80
+    restart: always
