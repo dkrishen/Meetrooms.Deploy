@@ -129,7 +129,7 @@ services:
     restart: always
 
   gateway:
-    image: "dkrishen/mragateway:host-1.3"
+    image: "dkrishen/mragateway:host-1.4"
     container_name: gateway
     ports:
       - 5100:80
@@ -139,7 +139,7 @@ services:
     restart: always
 
   identity:
-    image: "dkrishen/mraidentity:host-1.3"
+    image: "dkrishen/mraidentity:host-1.4"
     container_name: identity
     ports:
       - 5000:80
@@ -148,7 +148,7 @@ services:
     restart: always
 
   booking:
-    image: "dkrishen/mrabookings:host-1.3"
+    image: "dkrishen/mrabookings:host-1.4"
     container_name: bookings
     ports:
       - 5200:80
@@ -157,7 +157,7 @@ services:
     restart: always
       
   room:
-    image: "dkrishen/mrarooms:host-1.3"
+    image: "dkrishen/mrarooms:host-1.4"
     container_name: rooms
     ports:
       - 5300:80
@@ -166,7 +166,7 @@ services:
     restart: always
 
   user:
-    image: "dkrishen/mrausers:host-1.3"
+    image: "dkrishen/mrausers:host-1.4"
     container_name: users
     ports:
       - 5020:80
@@ -175,14 +175,14 @@ services:
     restart: always
 
   signalr.api:
-    image: "dkrishen/mrasignalr:host-1.3"
+    image: "dkrishen/mrasignalr:host-1.4"
     container_name: signalr
     ports:
       - 5400:80
     restart: always
 
   angular.spa:
-    image: "dkrishen/mraspa:host-1.3"
+    image: "dkrishen/mraspa:host-1.4"
     container_name: spa
     ports:
       - 4200:80
